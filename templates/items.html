@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+{% include 'navbar.html' %}
+
+{% block title %} FYP {% endblock %}
+
+{% block body %}
+
+<!-- Item div -->
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="mt-4 p-3 bg-light border">
+                <h2><a class="text-decoration-none text-reset" href="/items">Manage <b>Items</b></a> <button
+                        id="add-user" type="button" class="btn btn-success float-end" data-bs-toggle="modal"
+                        data-bs-target="#mymodalitem">Add New
+                        Item</button></h2>
+
+                <!-- **Search** -->
+                <form action="/items/search" method="post">
+                    <div class="float-end mt-2 mb-3">
+                        <input name="sTextItem" type="text" placeholder="Search" class="p-1" required>
+                        <input type="submit" value="Find">
+                    </div>
+                </form>
+
+
+                <!-- **Flash**
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissable" role="alert">
+                {{message}}
+                <button type="button" class="close float-end border border-0 bg-transparent" data-bs-dismiss="alert"
+                    aria-label="close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            -->
+
+                <table class="mt-4 table table-hover table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Available Quantity</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% for row in item_data %}
+
+                    <tr>
+                        <td>{{row.id}}</td>
+                        <td>{{row.name}}</td>
+                        <td>{{row.avail_quantity}}</td>
+                        <td>
+                            <a href="/items/update/{{row.id}}" class="btn btn-warning btn-xs" data-bs-toggle="modal"
+                                data-bs-target="#modaledititem{{row.id}}">
+                                Edit
+                            </a>
+                            <a href="/items/delete/{{row.id}}" class="btn btn-danger btn-xs"
+                                onclick="return confirm('Are you sure to delete?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- Modal edit student -->
+                    <div id="modaledititem{{row.id}}" class="modal fade" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Update Information</h4>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form action="{{url_for('updateItem')}}" method="POST">
+                                        <div class="mb-3">
+                                            <label>Name:</label>
+                                            <input type="hidden" name="id" value="{{row.id}}">
+                                            <input type="text" class="form-control" name="name" value="{{row.name}}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label>Available Quantity:</label>
+                                            <input type="number" class="form-control" name="avail_quantity"
+                                                value="{{row.avail_quantity}}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <button class="btn btn-primary" type="submit">Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </table>
+            </div>
+
+
+            <!-- Modal add student -->
+            <div id="mymodalitem" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add Item</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('insertItem')}}" method="POST">
+                                <div class="mb-3">
+
+                                    <label class="form-label">Name:</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Available Quantity:</label>
+                                    <input type="number" class="form-control" name="avail_quantity" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <button class="btn btn-primary" type="submit">Add Item</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+{% include 'navbar.html' %}
+
+{% block title %} FYP {% endblock %}
+
+
+{% block body %}
+
+
+<!-- User div -->
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="mt-4 p-3 bg-light border">
+                <h2><a class="text-decoration-none text-reset" href="/">Manage <b>Users</b></a> <button id="add-user"
+                        type="button" class="btn btn-success float-end" data-bs-toggle="modal"
+                        data-bs-target="#mymodaluser">Add New
+                        User</button></h2>
+
+                <!-- **Search** -->
+                <form action="/search" method="post">
+                    <div class="float-end mt-2 mb-3">
+                        <input name="sTextUser" type="text" placeholder="Search" class="p-1" required>
+                        <input type="submit" value="Find">
+                    </div>
+                </form>
+
+
+                <!-- **Flash**
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    {{message}}
+                    <button type="button" class="close float-end border border-0 bg-transparent" data-bs-dismiss="alert"
+                        aria-label="close">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                -->
+
+                <table class="mt-4 table table-hover table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% for row in user_data %}
+
+                    <tr>
+                        <td>{{row.id}}</td>
+                        <td>{{row.name}}</td>
+                        <td>{{row.contact}}</td>
+                        <td>
+                            <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-bs-toggle="modal"
+                                data-bs-target="#modaledituser{{row.id}}">
+                                Edit
+                            </a>
+                            <a href="/delete/{{row.id}}" class="btn btn-danger btn-xs"
+                                onclick="return confirm('Are you sure to delete?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- Modal edit student -->
+                    <div id="modaledituser{{row.id}}" class="modal fade" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Update Information</h4>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form action="{{url_for('update')}}" method="POST">
+                                        <div class="mb-3">
+                                            <label>Name:</label>
+                                            <input type="hidden" name="id" value="{{row.id}}">
+                                            <input type="text" class="form-control" name="name" value="{{row.name}}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label>Contact:</label>
+                                            <input type="text" class="form-control" name="contact"
+                                                value="{{row.contact}}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <button class="btn btn-primary" type="submit">Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </table>
+            </div>
+
+
+            <!-- Modal add student -->
+            <div id="mymodaluser" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add User</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('insert')}}" method="POST">
+                                <div class="mb-3">
+
+                                    <label class="form-label">Name:</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Contact:</label>
+                                    <input type="text" class="form-control" name="contact" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <button class="btn btn-primary" type="submit">Add User</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,5 @@
+Customer
+id, name, contact
+
+Item
+id, name, avail_quantity
