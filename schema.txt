@@ -2,4 +2,4 @@ Customer
 id, name, contact
 
 Item
-id, name, avail_quantity
+id, name, price, avail_quantity

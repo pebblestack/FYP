@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %} Bill {% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col md-12">
+      <h2 class="text-center">Bill</h2>
+      <h4>Customer ID: {{user_id}}</h4>
+      <h4>Customer Name: {{user_name}}</h4>
+      <h4>Customer Contact: {{user_contact}}</h4>
+
+      <table class="mt-4 table table-hover table-dark">
+        <tr>
+          <th>Item Name</th>
+          <th>Item Price</th>
+          <th>Quantity</th>
+        </tr>
+
+        {% for check_id in check_id_list %}
+        <tr>
+          <td>{{item_map[check_id][0]}}</td>
+          <td>{{item_map[check_id][1]}}</td>
+          <td>{{item_map[check_id][2]}}</td>
+        </tr>
+
+        {% endfor %}
+      </table>
+
+      <h3>Total Price: {{total_price}}</h3>
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}

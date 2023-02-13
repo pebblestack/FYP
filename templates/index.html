@@ -26,29 +26,13 @@
                     </div>
                 </form>
 
-
-                <!-- **Flash**
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-success alert-dismissable" role="alert">
-                    {{message}}
-                    <button type="button" class="close float-end border border-0 bg-transparent" data-bs-dismiss="alert"
-                        aria-label="close">
-                        <span aria-hidden="true">X</span>
-                    </button>
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
-                -->
-
                 <table class="mt-4 table table-hover table-dark">
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Contact</th>
                         <th>Action</th>
+                        <th>Bill Generate</th>
                     </tr>
 
                     {% for row in user_data %}
@@ -58,7 +42,7 @@
                         <td>{{row.name}}</td>
                         <td>{{row.contact}}</td>
                         <td>
-                            <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-bs-toggle="modal"
+                            <a class="btn btn-warning btn-xs" data-bs-toggle="modal"
                                 data-bs-target="#modaledituser{{row.id}}">
                                 Edit
                             </a>
@@ -66,10 +50,17 @@
                                 onclick="return confirm('Are you sure to delete?')">
                                 Delete
                             </a>
+
+                        </td>
+                        <td>
+                            <a class="btn btn-warning btn-xs" data-bs-toggle="modal"
+                                data-bs-target="#modalshopuser{{row.id}}">
+                                Shop
+                            </a>
                         </td>
                     </tr>
 
-                    <!-- Modal edit student -->
+                    <!-- Modal edit user -->
                     <div id="modaledituser{{row.id}}" class="modal fade" role="dialog" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -104,12 +95,58 @@
                         </div>
                     </div>
 
+                    <!-- Modal shop user -->
+                    <div id="modalshopuser{{row.id}}" class="modal fade" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Generate Bill</h4>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form action="/shop/{{row.id}}" method="POST">
+                                        {% for item_row in item_data %}
+                                        <div class="mb-3">
+                                            <input type="checkbox" name="itemcheck" value="{{item_row.id}}">
+                                            <label>Item Name:</label>
+                                            <input type="hidden" name="id" value="{{item_row.id}}">
+                                            <input type="text" class="form-control" name="name"
+                                                value="{{item_row.name}}" readonly>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label>Item Price:</label>
+                                            <input type="text" class="form-control" name="price"
+                                                value="{{item_row.price}}" readonly>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label>Quantity:</label>
+                                            <input type="text" class="form-control" name="quantity"
+                                                placeholder="Maximum: {{item_row.avail_quantity}}">
+                                        </div>
+
+                                        {% endfor %}
+                                        <div class="mb-3">
+                                            <button class="btn btn-primary" type="submit">Generate</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {% endfor %}
                 </table>
             </div>
 
 
-            <!-- Modal add student -->
+            <!-- Modal add user -->
             <div id="mymodaluser" class="modal fade" role="dialog" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -147,6 +184,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 

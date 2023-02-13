@@ -1,0 +1,8 @@
+Bill:
+Customer Id: 4
+Name: qwerty
+Contact: 343567889
+Item_Name Price Quantity
+Soap 18 1
+Chips 10 1
+Total Price: Rs 28
